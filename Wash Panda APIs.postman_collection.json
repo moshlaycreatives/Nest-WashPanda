@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "81b0a953-0259-4e55-bb89-87af41e9466f",
+		"name": "Wash Panda APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40150828"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"washpanda.admin@yopmail.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in a user and returns a JWT access token. Use this token for subsequent protected requests."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Jane Doe\",\n    \"phoneNumber\": \"+923009876543\",\n    \"email\": \"jane.doe@example.com\",\n    \"noOfCars\": 2,\n    \"carDetails\": [\n        {\n            \"vehicleType\": \"Sedan\",\n            \"package\": {\n                \"name\": \"Standard Wash\",\n                \"price\": 300\n            },\n            \"addons\": [\n                {\n                    \"addonName\": \"Tire Shine\",\n                    \"addonPrice\": 50\n                }\n            ],\n            \"vehicleMake\": \"Toyota\",\n            \"vehicleModel\": \"Corolla\"\n        },\n        {\n            \"vehicleType\": \"SUV\",\n            \"package\": {\n                \"name\": \"Premium Wash\",\n                \"price\": 600\n            },\n            \"addons\": [\n                {\n                    \"addonName\": \"Engine Bay Cleaning\",\n                    \"addonPrice\": 250\n                },\n                {\n                    \"addonName\": \"Interior Vacuum\",\n                    \"addonPrice\": 100\n                }\n            ],\n            \"vehicleMake\": \"Honda\",\n            \"vehicleModel\": \"CRV\"\n        }\n    ],\n    \"bookingDate\": \"2025-08-10T14:00:00Z\",\n    \"bookingTimeSlot\": \"Noon\",\n    \"address\": \"456 Oak Ave, Town, Country\",\n    \"paymentMethod\": \"Online Payment\",\n    \"message\": \"Please handle with care.\",\n    \"totalAmount\": 1300\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Creates a new booking. This endpoint is public and does not require authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Retrieves all bookings. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/68879e1d437eaed906c8a1d6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"68879e1d437eaed906c8a1d6"
+							]
+						},
+						"description": "Retrieves a single booking by its ID. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking (Partial)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Updated message for the booking.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "60c72b2f9b1d8e001c8e4a9d",
+									"description": "Replace with an actual Booking ID"
+								}
+							]
+						},
+						"description": "Updates an existing booking by its ID (partial update). Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookingStatus\": \"Confirmed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/68879e1d437eaed906c8a1d6/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"68879e1d437eaed906c8a1d6",
+								"status"
+							]
+						},
+						"description": "Updates the booking status of an existing booking by its ID. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Payment Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentStatus\": \"Paid\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/68879e1d437eaed906c8a1d6/payment-status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"68879e1d437eaed906c8a1d6",
+								"payment-status"
+							]
+						},
+						"description": "Updates the payment status of an existing booking by its ID. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking Summary",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"summary"
+							]
+						},
+						"description": "Retrieves the total number of bookings and total earnings. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "60c72b2f9b1d8e001c8e4a9d",
+									"description": "Replace with an actual Booking ID"
+								}
+							]
+						},
+						"description": "Deletes a booking by its ID. Requires Admin role."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Create Review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerName\": \"Alice Smith\",\n    \"carName\": \"Toyota Camry\",\n    \"review\": \"Excellent service! My car looks brand new.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews"
+							]
+						},
+						"description": "Creates a new review. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews"
+							]
+						},
+						"description": "Retrieves all reviews. Publicly accessible."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Review by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviews/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "60c72b2f9b1d8e001c8e4a9d",
+									"description": "Replace with an actual Review ID"
+								}
+							]
+						},
+						"description": "Retrieves a single review by its ID. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"review\": \"Service was good, but could be faster.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "60c72b2f9b1d8e001c8e4a9d",
+									"description": "Replace with an actual Review ID"
+								}
+							]
+						},
+						"description": "Updates an existing review by its ID. Requires Admin role."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviews/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "60c72b2f9b1d8e001c8e4a9d",
+									"description": "Replace with an actual Review ID"
+								}
+							]
+						},
+						"description": "Deletes a review by its ID. Requires Admin role."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

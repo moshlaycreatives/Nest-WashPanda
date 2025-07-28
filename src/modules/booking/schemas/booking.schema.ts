@@ -1,8 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { WashPackage, WashPackageSchema } from './washPackage.schema';
 import { Document } from 'mongoose';
-import { Addon, AddonSchema } from './addon.schema';
-import { BOOKING_TIME_SLOT, PAYMENT_METHOD } from 'src/common/constants';
+import {
+  BookingStatus,
+  BookingTimeSlots,
+  PaymentMethods,
+  PaymentStatus,
+} from '../enums';
+import { CarDetails, CarDetailsSchema } from './car-details.schema';
 
 @Schema({
   timestamps: true,
@@ -10,51 +14,61 @@ import { BOOKING_TIME_SLOT, PAYMENT_METHOD } from 'src/common/constants';
 })
 export class Booking extends Document {
   @Prop({ required: true })
-  vehicleType: string;
+  fullName: string;
 
-  @Prop({ type: WashPackageSchema, required: true })
-  washPackage: WashPackage;
+  @Prop({ required: true })
+  phoneNumber: string;
 
-  @Prop({ type: [AddonSchema], default: [] })
-  addons: Addon[];
+  @Prop({ required: true })
+  email: string;
+
+  @Prop({ required: true })
+  noOfCars: number;
+
+  @Prop({ type: [CarDetailsSchema], required: true })
+  carDetails: CarDetails[];
 
   @Prop({ required: true })
   bookingDate: Date;
 
   @Prop({
     type: String,
-    enum: Object.values(BOOKING_TIME_SLOT), // ["Morning", "Noon", "Evening", "Night"]
+    enum: Object.values(BookingTimeSlots),
     required: true,
   })
-  bookingTimeSlot: BOOKING_TIME_SLOT;
-
-  @Prop({ required: true })
-  fullName: string;
-
-  @Prop({ required: true })
-  email: string;
-
-  @Prop({ required: true })
-  phoneNumber: string;
+  bookingTimeSlot: BookingTimeSlots;
 
   @Prop({ required: true })
   address: string;
 
-  @Prop()
-  vehicleMake?: string;
-
-  @Prop()
-  vehicleModel?: string;
-
   @Prop({
     type: String,
-    enum: Object.values(PAYMENT_METHOD), // ["Cash", "Online Payment"]
+    enum: Object.values(PaymentMethods),
     required: true,
   })
-  paymentMethod: PAYMENT_METHOD;
+  paymentMethod: PaymentMethods;
 
   @Prop()
   message?: string;
+
+  @Prop({
+    type: String,
+    enum: Object.values(BookingStatus),
+    default: BookingStatus.Pending,
+  })
+  bookingStatus: BookingStatus;
+
+  @Prop({
+    type: String,
+    enum: Object.values(PaymentStatus),
+    default: PaymentStatus.UnPaid,
+  })
+  paymentStatus: PaymentStatus;
+
+  @Prop({ required: true })
+  totalAmount: number;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);
+
+export const BookingModel = Booking.name;

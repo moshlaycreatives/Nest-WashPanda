@@ -8,6 +8,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, BookingModule, UserModule } from './modules';
 import { ReviewModule } from './modules/review/review.module';
+import { GalleryModule } from './modules/gallery/gallery.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -17,6 +20,11 @@ import { ReviewModule } from './modules/review/review.module';
     UserModule,
     AuthModule,
     ReviewModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
+    }),
+    GalleryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

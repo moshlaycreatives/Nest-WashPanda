@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "81b0a953-0259-4e55-bb89-87af41e9466f",
+		"_postman_id": "2a1378b7-6ccf-4e33-a978-b2ac03e56864",
 		"name": "Wash Panda APIs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40150828"
@@ -502,6 +502,125 @@
 							]
 						},
 						"description": "Deletes a review by its ID. Requires Admin role."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gallery",
+			"item": [
+				{
+					"name": "Upload Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/Hassan/Downloads/WashPandaShorts.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gallery"
+							]
+						},
+						"description": "Uploads a new video to the gallery. Requires Admin role. Max file size: 100MB, Allowed types: video/*"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Videos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gallery",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gallery"
+							]
+						},
+						"description": "Retrieves all gallery videos. Publicly accessible."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Video By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gallery/688a3eadd1b4794dd75d6f44",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gallery",
+								"688a3eadd1b4794dd75d6f44"
+							]
+						},
+						"description": "Retrieves all gallery videos. Publicly accessible."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{wp_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/688a3eadd1b4794dd75d6f44",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gallery",
+								"688a3eadd1b4794dd75d6f44"
+							]
+						},
+						"description": "Deletes a video from the gallery by its ID. Requires Admin role."
 					},
 					"response": []
 				}

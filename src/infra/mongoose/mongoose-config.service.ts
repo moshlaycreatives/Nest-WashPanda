@@ -13,6 +13,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
     | Promise<MongooseModuleOptions>
     | MongooseModuleOptions {
     const MONGO_URI = this.configService.get('MONGO_URI');
+    console.log('MONGO_URI:', MONGO_URI);
 
     if (!MONGO_URI) {
       throw new Error(

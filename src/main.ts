@@ -49,9 +49,10 @@ async function bootstrap() {
 
   const protocol = httpsOptions ? 'https' : 'http';
   const environment = process.env.NODE_ENV || 'development';
-  const ip_address = httpsOptions
-    ? process.env.STATIC_IP
-    : process.env.LOCAL_IP;
+  const ip_address =
+    process.env.NODE_ENV === 'PRODUCTION'
+      ? process.env.STATIC_IP
+      : process.env.LOCAL_IP;
   console.log(
     `Server is running in ${environment} mode on ${protocol}://${ip_address}:${port}`,
   );

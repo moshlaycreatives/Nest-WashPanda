@@ -1,12 +1,6 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsArray,
-  ValidateNested,
-} from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreatePackageDto, CreateAddonDto } from './create-booking.dto'; // Re-use existing DTOs
+import { CreatePackageDto } from './create-booking.dto';
 
 export class CreateCarDetailsDto {
   @IsString()
@@ -17,18 +11,4 @@ export class CreateCarDetailsDto {
   @Type(() => CreatePackageDto)
   @IsNotEmpty()
   package: CreatePackageDto;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateAddonDto)
-  @IsOptional()
-  addons: CreateAddonDto[];
-
-  @IsString()
-  @IsOptional()
-  vehicleMake?: string;
-
-  @IsString()
-  @IsOptional()
-  vehicleModel?: string;
 }

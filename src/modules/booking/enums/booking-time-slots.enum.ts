@@ -3,4 +3,5 @@ export enum BookingTimeSlots {
   Noon = 'Noon',
   Evening = 'Evening',
   Night = 'Night',
+  MidNight = 'MidNight',
 }

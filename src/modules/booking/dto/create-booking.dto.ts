@@ -10,6 +10,7 @@ import {
   IsArray,
   IsNumber,
   Min,
+  ValidateIf,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { BookingTimeSlots, PaymentMethods } from '../enums';
@@ -44,8 +45,9 @@ export class CreateBookingDto {
   @IsNotEmpty()
   phoneNumber: string;
 
+  @IsOptional()
+  @ValidateIf((object, value) => value !== null && value !== '')
   @IsEmail()
-  @IsNotEmpty()
   email: string;
 
   @IsNumber()
@@ -67,9 +69,19 @@ export class CreateBookingDto {
   @IsNotEmpty()
   bookingTimeSlot: BookingTimeSlots;
 
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAddonDto)
+  @IsOptional()
+  addons: CreateAddonDto[];
+
   @IsString()
   @IsNotEmpty()
   address: string;
+
+  @IsString()
+  @IsOptional()
+  vehicleMakeAndModel?: string;
 
   @IsEnum(PaymentMethods)
   @IsNotEmpty()

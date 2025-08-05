@@ -7,6 +7,7 @@ import {
   PaymentStatus,
 } from '../enums';
 import { CarDetails, CarDetailsSchema } from './car-details.schema';
+import { Addon, AddonSchema } from './addon.schema';
 
 @Schema({
   timestamps: true,
@@ -19,8 +20,8 @@ export class Booking extends Document {
   @Prop({ required: true })
   phoneNumber: string;
 
-  @Prop({ required: true })
-  email: string;
+  @Prop()
+  email?: string;
 
   @Prop({ required: true })
   noOfCars: number;
@@ -38,8 +39,14 @@ export class Booking extends Document {
   })
   bookingTimeSlot: BookingTimeSlots;
 
+  @Prop({ type: [AddonSchema], default: [] })
+  addons?: Addon[];
+
   @Prop({ required: true })
   address: string;
+
+  @Prop()
+  vehicleMakeAndModel?: string;
 
   @Prop({
     type: String,

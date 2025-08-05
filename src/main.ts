@@ -9,6 +9,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new LoggingInterceptor());
 
+  app.enableCors();
   await app.listen(port);
 
   console.log(`Server is Running on http://localhost:${port}`);
